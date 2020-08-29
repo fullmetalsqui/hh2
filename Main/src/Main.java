@@ -26,7 +26,7 @@ public class Main {
         long globalStart = whenStart(vacancies);
         long globalEnd = whenEnd(vacancies);
         List<Integer> pastIndices = new ArrayList<>();
-        int maxCountVacancies = 1;
+        int maxCountVacancies = 0;
         for (long sec = globalStart; sec <= globalEnd; sec++){
             List<Integer> currentIndices = new ArrayList<>();
             int countVacancies = 0;
@@ -36,6 +36,13 @@ public class Main {
                     currentIndices.add(j);
                 }
             }
+            if (countVacancies == maxCountVacancies){
+                duration++;
+                if (!pastIndices.containsAll(currentIndices)){
+                    countIntervals++;
+                    pastIndices = new ArrayList<>(currentIndices);
+                }
+            }
             if (countVacancies > maxCountVacancies){
                 maxCountVacancies = countVacancies;
                 duration = 1;
@@ -43,13 +50,6 @@ public class Main {
                 if (pastIndices.isEmpty()){
                     pastIndices.addAll(currentIndices);
                 } else {
-                    pastIndices = new ArrayList<>(currentIndices);
-                }
-            }
-            if (countVacancies == maxCountVacancies){
-                duration++;
-                if (!pastIndices.containsAll(currentIndices)){
-                    countIntervals++;
                     pastIndices = new ArrayList<>(currentIndices);
                 }
             }
